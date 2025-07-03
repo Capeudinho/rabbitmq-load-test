@@ -1,0 +1,36 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports: ["5672:5672", "15672:15672"]
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  order_service:
+    build: ./order-service
+    depends_on: [rabbitmq]
+    ports: ["8000:8000"]
+
+  inventory_service:
+    build: ./inventory-service
+    depends_on: [rabbitmq]
+
+  billing_service:
+    build: ./billing-service
+    depends_on: [rabbitmq]
+
+  shipping_service:
+    build: ./shipping-service
+    depends_on: [rabbitmq]
+
+  notification_service:
+    build: ./notification-service
+    depends_on: [rabbitmq]
+
+  locust:
+    build: ./locust
+    ports: ["8089:8089"]
+    depends_on: [order_service]
+    command: >
+      -f locustfile.py
+      --host=http://order_service:8000
