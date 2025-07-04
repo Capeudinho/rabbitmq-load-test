@@ -27,7 +27,7 @@ async def handle_message(message: pk.IncomingMessage):
 	async with message.process():
 		order = json.loads(message.body)
 		print("[Billing service] Stocked order "+order["order_id"]+" received.")
-		await produce_exchange.publish(pk.Message(body = json.dumps(order).encode(), delivery_mode = pk.DeliveryMode.PERSISTENT),routing_key = ROUTING_KEY_PRODUCE)
+		await produce_exchange.publish(pk.Message(body = json.dumps(order).encode(), delivery_mode = pk.DeliveryMode.PERSISTENT), routing_key = ROUTING_KEY_PRODUCE)
 		print("[Billing service] Order "+order["order_id"]+" paid.")
 
 async def main():
