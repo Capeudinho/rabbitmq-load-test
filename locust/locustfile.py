@@ -7,5 +7,4 @@ class OrderUser(HttpUser):
 
     @task
     def place_order(self):
-        order = {"user_id": str(uuid.uuid4()), "items": random.sample(["processor", "keyboard", "screen", "mouse", "cabinet"], k = 2), "total": round(random.uniform(5, 30), 2)}
-        self.client.post("/order", json = order)
+        self.client.post("/order", json = {"user_id": str(uuid.uuid4()), "items": random.sample(["processor", "keyboard", "screen", "mouse", "cabinet"], k = 2), "total": round(random.uniform(10, 100), 2)})
